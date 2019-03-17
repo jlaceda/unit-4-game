@@ -34,10 +34,21 @@ class Fighter
 	}
 }
 
-// Your players should be able to win and lose the game no matter what character they choose. The challenge should come from picking the right enemies, not choosing the strongest player.
+// this part should test each order of defenders for each fighter and make sure theres a winning order and losing order.
+// TODO: adjust these numbers to balance game.
+function resetFighters()
+{
+	//					   hp ap cap
+	f1 = new Fighter("f1", 100, 6, 5);
+	f2 = new Fighter("f2", 120, 8, 10);
+	f3 = new Fighter("f3", 150, 10, 20);
+	f4 = new Fighter("f4", 180, 12, 25);
+}
 
+// Your players should be able to win and lose the game no matter what character they choose. The challenge should come from picking the right enemies, not choosing the strongest player.
 function doFights(fighterArray)
 {
+	resetFighters();
 	let attacker = fighterArray[0];
 	defenderArray = fighterArray.slice(1);
 	for (let i = 0; i < defenderArray.length && attacker.isAlive(); i++)
@@ -65,68 +76,36 @@ function doFights(fighterArray)
 	}
 }
 
-function resetFighters()
-{
-	//					   hp ap cap
-	f1 = new Fighter("f1", 100, 25, 25);
-	f2 = new Fighter("f2", 120, 25, 25);
-	f3 = new Fighter("f3", 150, 25, 25);
-	f4 = new Fighter("f4", 180, 25, 25);
-}
-
 //						   hp ap cap
 let f1 = new Fighter("f1", 0, 0, 0);
 let f2 = new Fighter("f2", 0, 0, 0);
 let f3 = new Fighter("f3", 0, 0, 0);
 let f4 = new Fighter("f4", 0, 0, 0);
 
-// https://initjs.org/all-permutations-of-a-set-f1be174c79f8
-function getAllPermutations(fighterArray)
-{
-	var results = [];
-	if (fighterArray.length === 1)
-	{
-		results.push(fighterArray);
-		return results;
-	}
+doFights([f1,f2,f3,f4]);
+doFights([f1,f2,f4,f3]);
+doFights([f1,f3,f2,f4]);
+doFights([f1,f3,f4,f2]);
+doFights([f1,f4,f2,f3]);
+doFights([f1,f4,f3,f2]);
 
-	for (var i = 0; i < fighterArray.length; i++)
-	{
-		var firstFighter = fighterArray[i];
-		var remainingFighters = fighterArray.slice(1);
-		var innerPermutations = getAllPermutations(remainingFighters);
-		for (var j = 0; j < innerPermutations.length; j++)
-		{
-			results.push([firstFighter].concat(innerPermutations[j]));
-		}
-	}
-	return results;
-}
+doFights([f2,f1,f3,f4]);
+doFights([f2,f1,f4,f3]);
+doFights([f2,f3,f4,f1]);
+doFights([f2,f3,f1,f4]);
+doFights([f2,f4,f3,f1]);
+doFights([f2,f4,f1,f3]);
 
-var arrayOfFighterArrays = getAllPermutations([f1,f2,f3,f4]);
+doFights([f3,f1,f2,f4]);
+doFights([f3,f1,f4,f2]);
+doFights([f3,f2,f1,f4]);
+doFights([f3,f2,f4,f1]);
+doFights([f3,f4,f1,f2]);
+doFights([f3,f4,f2,f1]);
 
-for (let i = 0; i < arrayOfFighterArrays.length; i++) {
-	const fighterArray = arrayOfFighterArrays[i];
-	resetFighters();
-	doFights(fighterArray);
-}
-
-console.dir(f1);
-console.dir(f2);
-console.dir(f3);
-console.dir(f4);
-
-// resetFighters();
-// doFights([f1,f2,f3,f4]);
-// resetFighters();
-// doFights([f1,f2,f4,f3]);
-
-// resetFighters();
-// doFights([f1,f3,f2,f4]);
-// resetFighters();
-// doFights([f1,f3,f4,f2]);
-
-// resetFighters();
-// doFights([f1,f4,f2,f3]);
-// resetFighters();
-// doFights([f1,f4,f3,f2]);
+doFights([f4,f1,f2,f3]);
+doFights([f4,f1,f3,f2]);
+doFights([f4,f2,f1,f3]);
+doFights([f4,f2,f3,f1]);
+doFights([f4,f3,f1,f2]);
+doFights([f4,f3,f2,f1]);
