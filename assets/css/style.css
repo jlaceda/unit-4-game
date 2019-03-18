@@ -1,0 +1,20 @@
+#playerContainer
+{
+	background-color: green;
+}
+
+#defenderContainer
+{
+	background-color: red;
+}
+
+#enemiesContainer
+{
+	background-color: orange;
+}
+
+h1
+{
+	text-align: center;
+	font-size: 2rem;
+}
