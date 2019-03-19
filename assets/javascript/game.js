@@ -19,11 +19,10 @@ let Game =
 	{
 		this.gameOver = false;
 		// this is where all Fighters are created.
-		// TODO: set stats here based on testing from Fighter.js
-		this.LukeSkywalker = new Fighter("Luke Skywalker", 100, 6, 5);
-		this.ObiwanKenobi = new Fighter("Obi-wan Kenobi", 120, 8, 10);
-		this.EmperorPalpatine = new Fighter("Emperor Palpatine", 150, 10, 20);
-		this.DarthMaul = new Fighter("Darth Maul", 180, 12, 25);
+		this.LukeSkywalker = new Fighter("Luke Skywalker", 110, 10, 8);
+		this.ObiwanKenobi = new Fighter("Obi-wan Kenobi", 120, 8, 11);
+		this.EmperorPalpatine = new Fighter("Emperor Palpatine", 140, 4, 30);
+		this.DarthMaul = new Fighter("Darth Maul", 130, 9, 25);
 
 		this.allFighters = [
 			this.LukeSkywalker,
