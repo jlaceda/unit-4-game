@@ -3,6 +3,28 @@
 	background-color: green;
 }
 
+#fighterName
+{
+	float: left;
+}
+
+#fighterHP
+{
+	float: left;
+}
+
+.fighter
+{
+	position: relative;
+	padding: 1rem;
+	text-align: center;
+}
+
+.fighter img 
+{
+	width: 100%;
+}
+
 #defenderContainer
 {
 	background-color: red;
@@ -11,6 +33,14 @@
 #enemiesContainer
 {
 	background-color: orange;
+}
+
+#gameContainer 
+{
+	color: white;
+	width: 480px;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 h1
