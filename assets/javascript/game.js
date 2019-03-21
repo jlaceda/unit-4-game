@@ -48,6 +48,11 @@ let Game =
 	// enemiesOnDeck and playerCharacter should be filled after this
 	chooseFighter: function(fighterName)
 	{
+		// don't do anything if playerCharacter is empty.
+		if (typeof(this.playerCharacter.name) !== "undefined")
+		{
+			return;
+		}
 		for (let i = 0; i < this.allFighters.length; i++)
 		{
 			const fighter = this.allFighters[i];
@@ -65,14 +70,16 @@ let Game =
 	// currentDefender and enemiesOnDeck are modified
 	pickDefender: function(chosenDefenderName)
 	{
-		let indexOfChosenDefender = -1;
-		for (let i = 0; i < this.enemiesOnDeck.length; i++)
+		if (typeof(this.currentDefender.name) !== "undefined")
 		{
-			if (this.enemiesOnDeck[i].name === chosenDefenderName)
-			{
-				indexOfChosenDefender = i;
-			}
+			return;
 		}
+
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
+		let indexOfChosenDefender = this.enemiesOnDeck.findIndex((enemy) =>
+		{
+			return enemy.name === chosenDefenderName;
+		});
 		this.currentDefender = this.enemiesOnDeck.splice(indexOfChosenDefender, 1)[0];
 	},
 	doAttack: function()
@@ -81,13 +88,21 @@ let Game =
 		if (this.currentDefender.isAlive())
 		{
 			this.playerCharacter.attack(this.currentDefender);
-			if (!this.playerCharacter.isAlive() || !this.currentDefender.isAlive())
+			// check for life after the attack.
+			if (!this.currentDefender.isAlive())
+			{
+				this.currentDefender = {};
+				return;
+			}
+			if (!this.playerCharacter.isAlive())
 			{
 				this.gameOver = true;
+				return;
 			}
 		}
 		else
 		{
+			// player won if theres no more enemies
 			if (this.enemiesOnDeck.length === 0)
 			{
 				this.gameOver = true;
