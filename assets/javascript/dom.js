@@ -7,15 +7,15 @@ let playerContainer = $('#playerContainer');
 let defenderContainer = $('#defenderContainer');
 let enemiesContainer = $('#enemiesContainer');
 let messageContainer = $('#messageContainer');
+let attackButtonContainer = $('#attackButtonContainer');
 
 // https://stackoverflow.com/a/39065147/1332190
 // template for fighter div.
 const fighterTemplate = ({ name, healthPoints, image }) => `
-<div class="fighter" data-fightername="${name}">
+<div class="fighter" data-name="${name}">
 	<img src="${image}" alt="${name}">
-	<span class="fighterName">${name}</span>
-	<br>
-	<span class="fighterHP">[${healthPoints}]</span>
+	<p class="fighterName">${name}</p>
+	<p class="fighterHP">[${healthPoints}]</p>
 </div>
 `;
 
@@ -26,6 +26,7 @@ function clearContainers()
 	enemiesContainer.empty();
 }
 
+// MAIN UPDATE/RENDER FUNCTION
 function updateGameDisplay()
 {
 	clearContainers();
@@ -34,32 +35,51 @@ function updateGameDisplay()
 	{
 		if (Game.playerCharacter.isAlive())
 		{
-			messageContainer.text("You Won!")
+			messageContainer.prepend("<h1>You Won!</h1>")
 		}
 		else
 		{
-			messageContainer.text("You Died.")
+			messageContainer.prepend("<h1>You Died.</h1>")
 		}
 		return;
 	}
 
-	// Game.enemiesOnDeck.forEach(function(enemy)
-	// {
-	// 	enemiesContainer.append($('<div>').text(enemy.name + " [" + enemy.healthPoints + "]"));
-	// });
+	// update enemiesContainer
 	enemiesContainer.html(Game.enemiesOnDeck.map(fighterTemplate).join(''));
 
-	playerContainer.append($('<div>').text(Game.playerCharacter.name + " [" + Game.playerCharacter.healthPoints + "]"));
-	// show empty defenderContainer if it's not picked yet or dead.
+	// update playerContainer
+	playerContainer.html([Game.playerCharacter].map(fighterTemplate).join(''));
+
+	// empty defenderContainer if it's not picked yet or dead.
 	if (typeof(Game.currentDefender.name) === 'undefined' || !Game.currentDefender.isAlive())
 	{
-		defenderContainer.append($('<div>').text('empty'));
+		Game.currentDefender = {};
+		defenderContainer.empty();
+		attackButtonContainer.empty();
 	}
 	else
 	{
-		defenderContainer.append($('<div>').text(Game.currentDefender.name + " [" + Game.currentDefender.healthPoints + "]"));
+		defenderContainer.html([Game.currentDefender].map(fighterTemplate).join(''));
+		attackButtonContainer.html("<button class='attackButton'>Attack " + Game.currentDefender.name + "!</button>");
 	}
-	
+
+	// update click handlers
+	attackButtonContainer.find(".attackButton").click(function()
+	{
+		Game.doAttack();
+		updateGameDisplay();
+	});
+
+	// add pickDefender to all fighters enemy
+	enemiesContainer.find(".fighter").one("click", function()
+	{
+		if (typeof(Game.currentDefender.name) === 'undefined')
+		{
+			// pickDefender and add doAttack click handler
+			Game.pickDefender($(this).attr("data-name"));
+		}
+		updateGameDisplay();
+	});
 }
 
 function initializeGameDisplay()
@@ -68,12 +88,11 @@ function initializeGameDisplay()
 	// https://stackoverflow.com/a/39065147/1332190
 	playerContainer.html(Game.allFighters.map(fighterTemplate).join(''));
 	// add a click handler for picking your character.
-	$("#playerContainer .fighter").click(function() {
-		Game.chooseFighter($(this).attr("data-fightername"));
+	playerContainer.find(".fighter").one("click", function()
+	{
+		Game.chooseFighter($(this).attr("data-name"));
 		updateGameDisplay();
 	});
-
-	
 }
 
 $(function() {
