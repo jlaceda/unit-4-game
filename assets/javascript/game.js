@@ -12,8 +12,12 @@ let Game =
 	playerCharacter: {},
 	currentDefender: {},
 	enemiesOnDeck: [],
+	messages:[],
 
+	// flags
 	gameOver: false,
+	defenderChosen: false,
+	characterChosen: false,
 
 	nameImageMap: {
 		"Luke Skywalker": "assets/images/luke.png",
@@ -25,6 +29,9 @@ let Game =
 	initGame: function()
 	{
 		this.gameOver = false;
+		this.defenderChosen = false;
+		this.characterChosen = false;
+
 		// this is where all Fighters are created.
 		this.LukeSkywalker = new Fighter("Luke Skywalker", 140, 4, 30);
 		this.ObiwanKenobi = new Fighter("Obi-wan Kenobi", 120, 8, 11);
@@ -43,14 +50,17 @@ let Game =
 		this.enemiesOnDeck = [];
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
 		this.allFighters.map(f => f.image = this.nameImageMap[f.name]);
+		this.messages.push("Welcome to Star Wars RPG!");
+		this.messages.push("To start playing, choose your starting character.");
 	},
 	// choose a fighter by name
 	// enemiesOnDeck and playerCharacter should be filled after this
 	chooseFighter: function(fighterName)
 	{
-		// don't do anything if playerCharacter is empty.
-		if (typeof(this.playerCharacter.name) !== "undefined")
+		// don't do anything if character has already been chosen
+		if (this.characterChosen)
 		{
+			this.messages.push("You already chose " + this.playerCharacter.name + "!");
 			return;
 		}
 		for (let i = 0; i < this.allFighters.length; i++)
@@ -65,22 +75,27 @@ let Game =
 				this.playerCharacter = fighter;
 			}
 		}
+		this.characterChosen = true;
+		this.messages.push("You chose " + this.playerCharacter.name + ". May the force be with you!");
+		this.messages.push("Now chose your first opponent.");
 	},
 	// pick a defender by name
 	// currentDefender and enemiesOnDeck are modified
 	pickDefender: function(chosenDefenderName)
 	{
-		if (typeof(this.currentDefender.name) !== "undefined")
+		// don't do anything if defender has already been chosen
+		if (this.defenderChosen)
 		{
 			return;
 		}
-
 		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex
 		let indexOfChosenDefender = this.enemiesOnDeck.findIndex((enemy) =>
 		{
 			return enemy.name === chosenDefenderName;
 		});
 		this.currentDefender = this.enemiesOnDeck.splice(indexOfChosenDefender, 1)[0];
+		this.defenderChosen = true;
+		this.messages.push(this.currentDefender.name + " wants to fight.");
 	},
 	doAttack: function()
 	{
@@ -92,6 +107,7 @@ let Game =
 			if (!this.currentDefender.isAlive())
 			{
 				this.currentDefender = {};
+				this.defenderChosen = false;
 				return;
 			}
 			if (!this.playerCharacter.isAlive())

@@ -26,6 +26,15 @@ function clearContainers()
 	enemiesContainer.empty();
 }
 
+function updateMessages(messageArray)
+{
+	messageContainer.empty();
+	messageArray.forEach(function(msg){
+		messageContainer.prepend("<h2>"+msg+"</h2>");
+		console.log(msg);
+	});
+}
+
 // MAIN UPDATE/RENDER FUNCTION
 function updateGameDisplay()
 {
@@ -35,14 +44,17 @@ function updateGameDisplay()
 	{
 		if (Game.playerCharacter.isAlive())
 		{
-			messageContainer.prepend("<h1>You Won!</h1>")
+			Game.messages.push("You Won!")
 		}
 		else
 		{
-			messageContainer.prepend("<h1>You Died.</h1>")
+			Game.messages.push("You Died.")
 		}
+		updateMessages(Game.messages);
 		return;
 	}
+
+	updateMessages(Game.messages);
 
 	// update enemiesContainer
 	enemiesContainer.html(Game.enemiesOnDeck.map(fighterTemplate).join(''));
@@ -51,7 +63,7 @@ function updateGameDisplay()
 	playerContainer.html([Game.playerCharacter].map(fighterTemplate).join(''));
 
 	// empty defenderContainer if it's not picked yet or dead.
-	if (typeof(Game.currentDefender.name) === 'undefined' || !Game.currentDefender.isAlive())
+	if (!Game.defenderChosen || !Game.currentDefender.isAlive())
 	{
 		Game.currentDefender = {};
 		defenderContainer.empty();
@@ -73,11 +85,7 @@ function updateGameDisplay()
 	// add pickDefender to all fighters enemy
 	enemiesContainer.find(".fighter").one("click", function()
 	{
-		if (typeof(Game.currentDefender.name) === 'undefined')
-		{
-			// pickDefender and add doAttack click handler
-			Game.pickDefender($(this).attr("data-name"));
-		}
+		Game.pickDefender($(this).attr("data-name"));
 		updateGameDisplay();
 	});
 }
@@ -93,9 +101,11 @@ function initializeGameDisplay()
 		Game.chooseFighter($(this).attr("data-name"));
 		updateGameDisplay();
 	});
+	
 }
 
 $(function() {
 	Game.initGame();
+	updateMessages(Game.messages);
 	initializeGameDisplay();
 });
