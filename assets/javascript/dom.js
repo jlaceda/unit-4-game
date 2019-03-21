@@ -6,6 +6,18 @@
 let playerContainer = $('#playerContainer');
 let defenderContainer = $('#defenderContainer');
 let enemiesContainer = $('#enemiesContainer');
+let messageContainer = $('#messageContainer');
+
+// https://stackoverflow.com/a/39065147/1332190
+// template for fighter div.
+const fighterTemplate = ({ name, healthPoints, image }) => `
+<div class="fighter" data-fightername="${name}">
+	<img src="${image}" alt="${name}">
+	<span class="fighterName">${name}</span>
+	<br>
+	<span class="fighterHP">[${healthPoints}]</span>
+</div>
+`;
 
 function clearContainers()
 {
@@ -22,19 +34,20 @@ function updateGameDisplay()
 	{
 		if (Game.playerCharacter.isAlive())
 		{
-			playerContainer.text("You Won!")
+			messageContainer.text("You Won!")
 		}
 		else
 		{
-			defenderContainer.text("You Died.")
+			messageContainer.text("You Died.")
 		}
 		return;
 	}
 
-	Game.enemiesOnDeck.forEach(function(enemy)
-	{
-		enemiesContainer.append($('<div>').text(enemy.name + " [" + enemy.healthPoints + "]"));
-	});
+	// Game.enemiesOnDeck.forEach(function(enemy)
+	// {
+	// 	enemiesContainer.append($('<div>').text(enemy.name + " [" + enemy.healthPoints + "]"));
+	// });
+	enemiesContainer.html(Game.enemiesOnDeck.map(fighterTemplate).join(''));
 
 	playerContainer.append($('<div>').text(Game.playerCharacter.name + " [" + Game.playerCharacter.healthPoints + "]"));
 	// show empty defenderContainer if it's not picked yet or dead.
@@ -52,18 +65,18 @@ function updateGameDisplay()
 function initializeGameDisplay()
 {
 	clearContainers();
+	// https://stackoverflow.com/a/39065147/1332190
+	playerContainer.html(Game.allFighters.map(fighterTemplate).join(''));
+	// add a click handler for picking your character.
+	$("#playerContainer .fighter").click(function() {
+		Game.chooseFighter($(this).attr("data-fightername"));
+		updateGameDisplay();
+	});
 
-	for (let i = 0; i < Game.allFighters.length; i++)
-	{
-		const fighter = Game.allFighters[i];
-		let fighterDiv = $('<div>').text(fighter.name + " [" + fighter.healthPoints + "]");
-		playerContainer.append(fighterDiv);
-	}
+	
 }
 
 $(function() {
-	console.log("ready!");
 	Game.initGame();
 	initializeGameDisplay();
-	gameplayTests();
 });
