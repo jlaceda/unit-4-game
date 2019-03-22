@@ -35,6 +35,11 @@
 	background-color: orange;
 }
 
+#defeatedContainer
+{
+	background-color: grey;
+}
+
 #gameContainer 
 {
 	color: white;

@@ -13,6 +13,7 @@ let Game =
 	currentDefender: {},
 	enemiesOnDeck: [],
 	messages:[],
+	defeatedEnemies: [],
 
 	// flags
 	gameOver: false,
@@ -97,15 +98,35 @@ let Game =
 		this.defenderChosen = true;
 		this.messages.push(this.currentDefender.name + " wants to fight.");
 	},
+	// format is 'attackerName <blanked> defenderName'
+	attackMessage: [
+		" smacked ",
+		" scolded ",
+		" force pushed ",
+		" used the force on ",
+		" punched ",
+		" pointed angrily ",
+		" glared at "
+	],
+	randomAttackMessage: function(attackerName, defenderName)
+	{
+		let randInt = Math.floor(Math.random() * this.attackMessage.length);
+		return attackerName + this.attackMessage[randInt] + defenderName +"!";
+	},
 	doAttack: function()
 	{
-		// don't do anything if the defender is ded.
-		if (this.currentDefender.isAlive())
+		// don't do anything if the defender is ded or not chosen yet.
+		if (this.defenderChosen == false || this.currentDefender.isAlive())
 		{
+			this.messages.push(this.randomAttackMessage(this.playerCharacter.name, this.currentDefender.name));
+			this.messages.push(this.playerCharacter.name + " did "+ this.playerCharacter.attackPower + " damage.");
 			this.playerCharacter.attack(this.currentDefender);
+			this.messages.push(this.currentDefender.name + " counter attacked!");
+
 			// check for life after the attack.
 			if (!this.currentDefender.isAlive())
 			{
+				this.defeatedEnemies.push(this.currentDefender);
 				this.currentDefender = {};
 				this.defenderChosen = false;
 				return;

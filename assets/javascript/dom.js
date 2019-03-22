@@ -8,6 +8,7 @@ let defenderContainer = $('#defenderContainer');
 let enemiesContainer = $('#enemiesContainer');
 let messageContainer = $('#messageContainer');
 let attackButtonContainer = $('#attackButtonContainer');
+let defeatedContainer = $('#defeatedContainer');
 
 // https://stackoverflow.com/a/39065147/1332190
 // template for fighter div.
@@ -24,6 +25,7 @@ function clearContainers()
 	playerContainer.empty();
 	defenderContainer.empty();
 	enemiesContainer.empty();
+	defeatedContainer.empty();
 }
 
 function updateMessages(messageArray)
@@ -88,6 +90,8 @@ function updateGameDisplay()
 		Game.pickDefender($(this).attr("data-name"));
 		updateGameDisplay();
 	});
+
+	defeatedContainer.html(Game.defeatedEnemies.map(fighterTemplate).join(''));
 }
 
 function initializeGameDisplay()
