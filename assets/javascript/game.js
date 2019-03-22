@@ -104,7 +104,7 @@ let Game =
 		" scolded ",
 		" force pushed ",
 		" used the force on ",
-		" punched ",
+		" lightsabered ",
 		" pointed angrily ",
 		" glared at "
 	],
