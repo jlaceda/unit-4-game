@@ -27,12 +27,14 @@ function clearContainers()
 	enemiesContainer.empty();
 	defeatedContainer.empty();
 	attackButtonContainer.empty();
+	$(".label").hide();
 }
 
 function updateMessages(messageArray)
 {
 	messageContainer.empty();
-	messageArray.forEach(function(msg){
+	messageArray.forEach(function(msg)
+	{
 		messageContainer.prepend("<h2>"+msg+"</h2>");
 	});
 }
@@ -55,14 +57,29 @@ function updateGameDisplay()
 		updateMessages(Game.messages);
 		return;
 	}
-
+	// show new messages
 	updateMessages(Game.messages);
 
 	// update enemiesContainer
-	enemiesContainer.html(Game.enemiesOnDeck.map(fighterTemplate).join(''));
+	if (Game.enemiesOnDeck.length !== 0)
+	{
+		$("#opponentZoneLabel").show();
+		enemiesContainer.html(Game.enemiesOnDeck.map(fighterTemplate).join(''));
+	}
 
 	// update playerContainer
-	playerContainer.html([Game.playerCharacter].map(fighterTemplate).join(''));
+	if (Game.characterChosen)
+	{
+		$("#playerZoneLabel").show();
+		playerContainer.html([Game.playerCharacter].map(fighterTemplate).join(''));
+	}
+
+	// update defeatedContainer div
+	if (Game.defeatedEnemies.length !== 0)
+	{
+		$("#defeatedZoneLabel").show();
+		defeatedContainer.html(Game.defeatedEnemies.map(fighterTemplate).join(''));
+	}
 
 	// empty defenderContainer if it's not picked yet or dead.
 	if (!Game.defenderChosen || !Game.currentDefender.isAlive())
@@ -73,6 +90,7 @@ function updateGameDisplay()
 	}
 	else
 	{
+		$("opponentZoneLabel").show();
 		defenderContainer.html([Game.currentDefender].map(fighterTemplate).join(''));
 		attackButtonContainer.html("<button class='attackButton'>Attack " + Game.currentDefender.name + "!</button>");
 	}
@@ -90,8 +108,6 @@ function updateGameDisplay()
 		Game.pickDefender($(this).attr("data-name"));
 		updateGameDisplay();
 	});
-
-	defeatedContainer.html(Game.defeatedEnemies.map(fighterTemplate).join(''));
 }
 
 function initializeGameDisplay()

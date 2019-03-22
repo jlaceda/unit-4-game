@@ -121,11 +121,12 @@ let Game =
 			this.messages.push(this.randomAttackMessage(this.playerCharacter.name, this.currentDefender.name));
 			this.messages.push(this.playerCharacter.name + " did "+ this.playerCharacter.attackPower + " damage.");
 			this.playerCharacter.attack(this.currentDefender);
-			this.messages.push(this.currentDefender.name + " counter attacked!");
 
 			// check for life after the attack.
 			if (!this.currentDefender.isAlive())
 			{
+				this.messages.push(this.currentDefender.name + " is defeated.");
+				this.messages.push("Chose your next opponent");
 				this.defeatedEnemies.push(this.currentDefender);
 				this.currentDefender = {};
 				this.defenderChosen = false;
@@ -133,6 +134,7 @@ let Game =
 			}
 			if (!this.playerCharacter.isAlive())
 			{
+				this.messages.push(this.currentDefender.name + " counter attacked!");
 				this.gameOver = true;
 				return;
 			}

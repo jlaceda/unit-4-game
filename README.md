@@ -4,7 +4,7 @@ UW Coding Bootcamp Homework - RPG Game
 ## Specification
 1. Here's how the app works:
    - [x] When the game starts, the player will choose a character by clicking on the fighter's picture. The player will fight as that character for the rest of the game.
-   - [ ] The player must then defeat all of the remaining fighters. Enemies should be moved to a different area of the screen.
+   - [x] The player must then defeat all of the remaining fighters. Enemies should be moved to a different area of the screen.
    - [x] The player chooses an opponent by clicking on an enemy's picture.
    - [x] Once the player selects an opponent, that enemy is moved to a `defender area`.
    - [x] The player will now be able to click the `attack` button.
@@ -12,7 +12,7 @@ UW Coding Bootcamp Homework - RPG Game
      - [x] The opponent character will instantly counter the attack. When that happens, the player's character will lose some of their `HP`. These points are shown at the bottom of the player character's picture.
 2. - [x] The player will keep hitting the attack button in an effort to defeat their opponent.
    - [x] When the defender's `HP` is reduced to zero or below, remove the enemy from the `defender area`. The player character can now choose a new opponent.
-3. - [ ] The player wins the game by defeating all enemy characters. The player loses the game the game if their character's `HP` falls to zero or below.
+3. - [x] The player wins the game by defeating all enemy characters. The player loses the game the game if their character's `HP` falls to zero or below.
 4. Game design notes
     - [x] Each character in the game has 3 attributes: `Health Points`, `Attack Power` and `Counter Attack Power`.
     - [x] Each time the player attacks, their character's Attack Power increases by its base Attack Power. 
