@@ -98,6 +98,7 @@ let Game =
 		this.defenderChosen = true;
 		this.messages.push(this.currentDefender.name + " wants to fight.");
 	},
+	// random attack messages for the lafs.
 	// format is 'attackerName <blanked> defenderName'
 	attackMessage: [
 		" went hella crazy on ",
@@ -120,7 +121,7 @@ let Game =
 	doAttack: function()
 	{
 		// don't do anything if the defender is ded or not chosen yet.
-		if (this.defenderChosen == false || this.currentDefender.isAlive())
+		if (this.defenderChosen)
 		{
 			this.messages.push(this.randomAttackMessage(this.playerCharacter.name, this.currentDefender.name));
 			this.messages.push(this.playerCharacter.name + " did "+ this.playerCharacter.attackPower + " damage.");
@@ -130,6 +131,12 @@ let Game =
 			if (!this.currentDefender.isAlive())
 			{
 				this.messages.push(this.currentDefender.name + " is defeated.");
+				// player won if theres no more enemies
+				if (this.enemiesOnDeck.length === 0)
+				{
+					this.gameOver = true;
+					return;
+				}
 				this.messages.push("Chose your next opponent");
 				this.defeatedEnemies.push(this.currentDefender);
 				this.currentDefender = {};
@@ -141,14 +148,6 @@ let Game =
 				this.messages.push(this.currentDefender.name + " counter attacked!");
 				this.gameOver = true;
 				return;
-			}
-		}
-		else
-		{
-			// player won if theres no more enemies
-			if (this.enemiesOnDeck.length === 0)
-			{
-				this.gameOver = true;
 			}
 		}
 	},
