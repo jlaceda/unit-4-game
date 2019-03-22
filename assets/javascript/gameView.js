@@ -48,11 +48,11 @@ function updateGameDisplay()
 	{
 		if (Game.playerCharacter.isAlive())
 		{
-			Game.messages.push("You Won!")
+			playerContainer.html("<h1>You Won!</h1>");
 		}
 		else
 		{
-			Game.messages.push("You Died.")
+			defenderContainer.html("<h1>You Died.</h1>")
 		}
 		updateMessages(Game.messages);
 		return;
