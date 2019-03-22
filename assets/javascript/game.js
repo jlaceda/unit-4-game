@@ -100,6 +100,10 @@ let Game =
 	},
 	// format is 'attackerName <blanked> defenderName'
 	attackMessage: [
+		" went hella crazy on ",
+		" opened a can of whoop ass",
+		" karate chopped ",
+		" used Tail Whip on ",
 		" smacked ",
 		" scolded ",
 		" force pushed ",
