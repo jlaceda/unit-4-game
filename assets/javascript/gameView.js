@@ -26,6 +26,7 @@ function clearContainers()
 	defenderContainer.empty();
 	enemiesContainer.empty();
 	defeatedContainer.empty();
+	attackButtonContainer.empty();
 }
 
 function updateMessages(messageArray)
@@ -33,7 +34,6 @@ function updateMessages(messageArray)
 	messageContainer.empty();
 	messageArray.forEach(function(msg){
 		messageContainer.prepend("<h2>"+msg+"</h2>");
-		console.log(msg);
 	});
 }
 
